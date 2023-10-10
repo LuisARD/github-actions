@@ -1,14 +1,20 @@
-name: Hola mundo 
-
-on: [push]
-
+name: Deploy to Surge
+on:
+  push:
+    branches:
+      - main
 jobs:
-  hello_world_job:
+  deploy:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout el código 
-      uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-    - name: Imprimir Hola, mundo
-      run: echo "Hola, mundo"
+      - name: Instalar surge
+        run: |
+          npm install --global surge
+
+      - name: Hacer deploy
+        run: |
+          surge --project ./ --domain estudiante8.surge.sh --token ${{ secrets.SURGE_API_KEY }}
+
